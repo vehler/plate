@@ -6,7 +6,7 @@ This file tracks all tasks that are currently being worked on.
 
 | ID | Title | Priority | Assignee | Started Date | Expected Completion |
 |----|-------|----------|----------|-------------|---------------------|
-| *No tasks in progress* | | | | | |
+| P1-T1 | Initialize Project with Payload Blank Template | P0 | Windsurf | 2025-06-07 | 2025-06-08 |
 
 ## Phase 2: Core Feature Enhancements
 

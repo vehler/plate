@@ -6,7 +6,6 @@ This file tracks all tasks that are planned but not yet started.
 
 | ID | Title | Priority | Due Date | Dependencies |
 |----|-------|----------|----------|-------------|
-| P1-T1 | Initialize Project with Payload Blank Template | P0 | 2025-06-15 | None |
 | P1-T2 | Enhance Docker Configuration | P1 | 2025-06-18 | P1-T1 |
 | P1-T3 | Implement Feature-Based Directory Structure | P0 | 2025-06-22 | P1-T1 |
 | P1-T4 | Integrate shadcn/ui | P1 | 2025-06-25 | P1-T1 |
