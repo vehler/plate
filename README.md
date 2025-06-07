@@ -1,67 +1,113 @@
-# Plate
+# Plate: Next.js 15 + Payload CMS v3 Boilerplate
 
-This template comes configured with the bare minimum to get started on anything you need.
+A comprehensive, server-first boilerplate leveraging Payload CMS v3's revolutionary Next.js-native architecture. Unlike traditional CMS solutions that require separate backend services, Payload v3 installs directly into your Next.js `/app` folder, enabling true server-first development with **local API access that eliminates HTTP overhead entirely**.
 
-## Quick start
+## Features
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+- **Server-First Architecture**: 80-90% server-rendered components with strategic client-side hydration
+- **Dual Authentication System**: Super admin (Payload) and application users (custom frontend)
+- **Feature-Based Modular Architecture**: Organized into core and extended features
+- **Automatic Collection Registration**: No manual configuration required
+- **shadcn/ui Integration**: Beautiful UI components with theme support
+- **Docker Setup**: Development and production configurations ready to go
 
-## Quick Start - local setup
+## Project Structure
 
-To spin up this template locally, follow these steps:
+```
+src/
+├── app/                        # Next.js App Router
+│   ├── (frontend)/            # Public-facing application
+│   │   ├── account/           # User account management
+│   │   ├── auth/              # User authentication
+│   │   └── dashboard/         # User dashboard
+│   └── (payload)/             # Payload admin routes (super admin only)
+├── features/
+│   ├── core/                  # Essential system features
+│   │   ├── auth/              # User authentication system
+│   │   ├── users/             # Application user management
+│   │   ├── accounts/          # Account management features
+│   │   └── admin/             # Super admin features
+│   └── extend/                # Custom business features
+├── shared/
+│   ├── components/            # Reusable UI components
+│   ├── lib/                   # Utility functions
+│   └── types/                 # Shared TypeScript types
+└── payload.config.ts          # Payload configuration
+```
 
-### Clone
-
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+## Quick Start
 
 ### Development
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URI` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+1. Clone this repository
+2. Copy the environment variables: `cp .env.example .env`
+3. Update the `.env` file with your MongoDB connection string
 
 3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+4. Open `http://localhost:3000` to access the app in your browser
+5. Navigate to `http://localhost:3000/admin` to access the Payload CMS admin panel
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+### Docker Development
 
-#### Docker (Optional)
+```bash
+# Start the development environment with Docker
+docker-compose up -d
 
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
+# View logs
+docker-compose logs -f
+```
 
-To do so, follow these steps:
+### Production Deployment
 
-- Modify the `MONGODB_URI` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URI` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
+```bash
+# Build the production Docker image
+docker build -t plate .
 
-## How it works
+# Run the container
+docker run -p 3000:3000 plate
+```
 
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
+## Task Management
 
-### Collections
+This project follows a structured task management approach (Task First Approach). All development work is organized in the `tasks/` directory:
 
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
+- **Phase-based organization**: Tasks are organized by implementation phase in `tasks/phases/`
+- **Kanban workflow**: Tasks progress through backlog → in-progress → review → completed
+- **Prioritization system**: Tasks are prioritized as P0 (Critical) to P3 (Low)
 
-- #### Users (Authentication)
+Refer to the task management system before making any code changes.
 
-  Users are auth-enabled collections that have access to the admin panel.
+## Technology Stack
 
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/main/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
+- **Next.js 15**: App Router, Server Components, Server Actions
+- **Payload CMS v3**: Headless CMS with local API access
+- **MongoDB**: Database adapter
+- **shadcn/ui**: Component library with theme support (to be integrated)
+- **Docker**: Development and production containerization
 
-- #### Media
+## Feature-Based Architecture
 
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
+The boilerplate implements a dual-module system distinguishing between core functionality and extensible features:
 
-### Docker
+- **Core Features**: Essential system functionality (auth, users, etc.)
+- **Extended Features**: Custom business functionality that can be easily added or removed
 
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
+Each feature follows a standardized structure enabling automatic registration and consistent patterns across the codebase.
 
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
+## Collections
 
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
+The initial setup includes the following collections:
 
-## Questions
+- **Users**: Authentication-enabled collection for admin access
+- **Media**: Handles file uploads with image optimization
 
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+Additional collections will be created as part of the feature-based architecture implementation.
+
+## Project Implementation Phases
+
+1. **Foundation Enhancement**: Setup and organize project structure
+2. **Core Feature Enhancements**: Authentication, account management, email verification
+3. **Extended Features**: Blog, dashboard, file uploads, code generation
+4. **Production Optimization**: Performance, documentation, deployment
+
+Refer to the `tasks/phases/` directory for detailed implementation plans for each phase.

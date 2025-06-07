@@ -1,22 +1,41 @@
-version: '3'
+version: '3.8'
 
 services:
   payload:
-    image: node:18-alpine
+    image: node:20-alpine
     ports:
       - '3000:3000'
     volumes:
       - .:/home/node/app
       - node_modules:/home/node/app/node_modules
+      - ./.pnpm-store:/home/node/.pnpm-store
     working_dir: /home/node/app/
     command: sh -c "corepack enable && corepack prepare pnpm@latest --activate && pnpm install && pnpm dev"
     depends_on:
-      - mongo
-      # - postgres
+      mongo:
+        condition: service_healthy
     env_file:
       - .env
+    environment:
+      - DATABASE_URI=mongodb://mongo/plate
+      - NODE_ENV=development
+      # Add Payload development config
+      - PAYLOAD_CONFIG_PATH=src/payload.config.ts
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    # Enable development refresh on Windows/Mac
+    develop:
+      watch:
+        - path: ./package.json
+          action: rebuild
+        - path: ./pnpm-lock.yaml
+          action: rebuild
 
-  # Ensure your DATABASE_URI uses 'mongo' as the hostname ie. mongodb://mongo/my-db-name
+  # Ensure your DATABASE_URI uses 'mongo' as the hostname ie. mongodb://mongo/plate
   mongo:
     image: mongo:latest
     ports:
@@ -24,20 +43,27 @@ services:
     command:
       - --storageEngine=wiredTiger
     volumes:
-      - data:/data/db
+      - mongo_data_dev:/data/db
+      # Add initialization scripts volume for development data seeding
+      - ./docker/mongo-init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    environment:
+      - MONGO_INITDB_DATABASE=plate
     logging:
-      driver: none
-
-  # Uncomment the following to use postgres
-  # postgres:
-  #   restart: always
-  #   image: postgres:latest
-  #   volumes:
-  #     - pgdata:/var/lib/postgresql/data
-  #   ports:
-  #     - "5432:5432"
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 volumes:
-  data:
-  # pgdata:
+  mongo_data_dev:
+    driver: local
   node_modules:
+    driver: local
+  .pnpm-store:
+    driver: local

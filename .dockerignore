@@ -1,0 +1,64 @@
+# Version control
+.git
+.gitignore
+.github
+.gitattributes
+
+# Build artifacts
+.next
+dist
+build
+out
+
+# Dependencies
+node_modules
+.pnpm-store
+.pnpm-debug.log
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Development files
+README.md
+CHANGELOG.md
+LICENSE
+*.log
+*.md
+docker-compose*.yml
+Dockerfile*
+.dockerignore
+
+# Docker
+docker
+
+# Editor and OS specific files
+.vscode
+.idea
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Testing
+coverage
+.nyc_output
+__tests__
+**/*.test.*
+**/*.spec.*
+jest.config.*
+
+# Temporary files
+tmp
+temp
+.cache
+
+# Task management
+tasks
+
+# Debug files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*

@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
+    restart: always
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URI=mongodb://mongo/plate
+      - PAYLOAD_SECRET=${PAYLOAD_SECRET}
+      - PAYLOAD_CONFIG_PATH=dist/payload.config.js
+    depends_on:
+      mongo:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:3000/api/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+
+  mongo:
+    image: mongo:latest
+    restart: always
+    ports:
+      - '27018:27017'  # Different port from dev to avoid conflicts
+    volumes:
+      - mongo_data_prod:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER:-admin}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD:-secret}
+    command:
+      - --auth
+      - --wiredTigerCacheSizeGB=1
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.7'
+          memory: 1G
+
+volumes:
+  mongo_data_prod:
+    driver: local

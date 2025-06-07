@@ -16,17 +16,17 @@ Building on the Payload blank template to establish the core architecture and st
 
 | ID | Title | Status | Priority | Description |
 |----|-------|--------|----------|-------------|
-| P1-T1 | Initialize Project with Payload Blank Template | Backlog | P0 | Create initial project using `npx create-payload-app` with blank template |
-| P1-T2 | Enhance Docker Configuration | Backlog | P1 | Optimize Docker setup for both development and production |
+| P1-T1 | Initialize Project with Payload Blank Template | Completed | P0 | Create initial project using `npx create-payload-app` with blank template |
+| P1-T2 | Enhance Docker Configuration | Completed | P1 | Optimize Docker setup for both development and production |
 | P1-T3 | Implement Feature-Based Directory Structure | Backlog | P0 | Restructure codebase to follow feature-based modular architecture |
 | P1-T4 | Integrate shadcn/ui | Backlog | P1 | Set up shadcn/ui with proper theming and base components |
 | P1-T5 | Create Automatic Collection Registration | Backlog | P1 | Implement system to automatically register collections |
 
 ## Progress
 
-- [ ] 0% Complete - Not started
-- [ ] Project initialized
-- [ ] Docker configuration enhanced
+- [ ] 40% Complete - In progress
+- [x] Project initialized
+- [x] Docker configuration enhanced
 - [ ] Feature-based architecture implemented
 - [ ] shadcn/ui integrated
 - [ ] Automatic collection registration implemented
